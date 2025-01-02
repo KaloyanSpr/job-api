@@ -1,5 +1,6 @@
 package example.job_api.entities;
 
+import example.job_api.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

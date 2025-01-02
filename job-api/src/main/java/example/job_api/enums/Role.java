@@ -1,4 +1,4 @@
-package example.job_api.entities;
+package example.job_api.enums;
 
 public enum Role {
     ADMIN,
