@@ -28,9 +28,9 @@ public class User {
     @Column(name = "email_id", nullable = false, unique = true)
     private String email;
 
-//    @Enumerated(EnumType.STRING) // Enum will be stored as a String in the database
-//    @Column(nullable = false)
-//    private Role role; // Define the field here
+    @Enumerated(EnumType.STRING) // Enum will be stored as a String in the database
+    @Column(nullable = false)
+    private Role role; // Define the field here
 
     @ManyToMany
     @JoinTable(

@@ -6,19 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
-
-@Getter
 @Setter
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-
-public class UserDto {
-
+@AllArgsConstructor
+public class JobDto {
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String role;
-    private Set<Long> skillIds;
+    private String title;
+    private String description;
+    private String location;
+    private Long companyId;
     private Set<Long> applicationIds;
 }
