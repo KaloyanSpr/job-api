@@ -5,7 +5,7 @@ import example.job_api.entities.Application;
 import example.job_api.entities.Job;
 import example.job_api.entities.User;
 import example.job_api.services.application.ApplicationService;
-import example.job_api.services.job.JobSevice;
+import example.job_api.services.job.JobService;
 import example.job_api.services.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class ApplicationMapper {
     private final ApplicationService applicationService;
     private final UserService userService;
-    private final JobSevice jobService;
+    private final JobService jobService;
     public  ApplicationDto toDto(Application application) {
         if (application == null) {
             return null;

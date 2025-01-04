@@ -4,7 +4,7 @@ import example.job_api.dto.CompanyDto;
 import example.job_api.entities.Application;
 import example.job_api.entities.Company;
 import example.job_api.entities.Job;
-import example.job_api.services.job.JobSevice;
+import example.job_api.services.job.JobService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Component
 @AllArgsConstructor
 public class CompanyMapper {
-    private final JobSevice jobService;
+    private final JobService jobService;
     public CompanyDto toDto(Company company) {
         if (company == null) {
             return null;
