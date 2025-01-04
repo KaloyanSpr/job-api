@@ -10,6 +10,8 @@ import java.util.List;
 public interface CompanyService {
     CompanyDto createCompany(CompanyDto companyDto);
     CompanyDto getCompanyById(Long companyId);
+    CompanyDto updateCompany(Long id,CompanyDto companyDto);
     Company getCompanyModelById(Long id);
     List<Company> getCompaniesByIds(List<Long> companyIds);
+    void deleteCompany(Long id);
 }
