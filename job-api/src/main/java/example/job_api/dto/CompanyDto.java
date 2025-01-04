@@ -17,6 +17,5 @@ public class CompanyDto {
     private String title;
     private String description;
     private String location;
-    private Long companyId;
-    private Set<Long> applicationsIds;
+    private Set<Long> jobIds;
 }
