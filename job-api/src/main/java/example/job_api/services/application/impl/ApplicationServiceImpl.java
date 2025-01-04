@@ -109,7 +109,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                     .orElseThrow(() -> new RuntimeException("Application not found for id: " + id));
             applicationRepository.delete(application);
 
-        } catch (Exception e) { 
+        } catch (Exception e) {
             throw new RuntimeException("Failed to delete application");
         }
     }
