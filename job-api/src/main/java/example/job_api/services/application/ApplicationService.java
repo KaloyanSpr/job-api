@@ -8,4 +8,8 @@ import java.util.Set;
 public interface ApplicationService {
     ApplicationDto getApplicationById(Long id);
     Set<Application> getApplicationsByIds(Set<Long> ids);
+    Set<Application> getApplicationsByUserId(Long userId);
+    ApplicationDto createApplication(ApplicationDto applicationDto);
+    void updateApplication(Long id, ApplicationDto applicationDto);
+    void deleteApplication(Long id);
 }
