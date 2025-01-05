@@ -14,4 +14,5 @@ public interface CompanyService {
     Company getCompanyModelById(Long id);
     List<Company> getCompaniesByIds(List<Long> companyIds);
     void deleteCompany(Long id);
+    List<CompanyDto> getAllCompanies();
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 @AllArgsConstructor
@@ -76,7 +77,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public void updateApplication(Long id, ApplicationDto applicationDto) {
+    public ApplicationDto updateApplication(Long id, ApplicationDto applicationDto) {
         if (id == null) {
             throw new IllegalArgumentException("Application ID cannot be null");
         }
@@ -90,7 +91,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                     .orElseThrow(() -> new RuntimeException("Application not found for id: " + id));
 
             existingApplication.setStatus(applicationDto.getStatus());
-            applicationRepository.save(existingApplication);
+            Application updatedApplication = applicationRepository.save(existingApplication);
+            return applicationMapper.toDto(updatedApplication);
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to update application");
@@ -112,6 +114,17 @@ public class ApplicationServiceImpl implements ApplicationService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to delete application");
         }
+    }
+
+    @Override
+    public List<ApplicationDto> getApplicationsByJobId(Long jobId) {
+        // Fetch applications for the job
+        List<Application> applications = applicationRepository.findByJobId(jobId);
+
+        // Map applications to DTOs
+        return applications.stream()
+                .map(applicationMapper::toDto)
+                .toList();
     }
 
 }
