@@ -12,4 +12,9 @@ public interface JobService {
     Set<Job> getJobsByIds(Set<Long> ids);
     Job getJobByModelId(Long id);
     List<ApplicationDto> getApplicationsForJob(Long jobId);
+    JobDto createJob(JobDto jobDto);
+    Set<JobDto> getAllJobs();
+    JobDto updateJob(Long id, JobDto jobDto);
+    void deleteJob(Long id);
+
 }
