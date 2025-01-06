@@ -2,21 +2,17 @@ package example.job_api.controllers;
 
 import example.job_api.dto.ApplicationDto;
 import example.job_api.services.application.ApplicationService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/applications")
 public class ApplicationController {
     private final ApplicationService applicationService;
-
-    @Autowired
-    public ApplicationController(ApplicationService applicationService) {
-        this.applicationService = applicationService;
-    }
-
     @PostMapping
     public ResponseEntity<ApplicationDto> createApplication(@RequestBody ApplicationDto applicationDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(applicationService.createApplication(applicationDTO));

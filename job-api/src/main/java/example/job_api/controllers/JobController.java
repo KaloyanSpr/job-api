@@ -56,4 +56,5 @@ public class JobController {
         List<ApplicationDto> applicationDtos = applicationService.getApplicationsByJobId(jobId);
         return ResponseEntity.ok(applicationDtos);
     }
+
 }

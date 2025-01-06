@@ -11,6 +11,6 @@ import java.util.Optional;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, Long> {
-    Optional<Job> findByModelId(Long modelId);
-
+    Optional<Job> findById(Long id);
+    List<Job> findByCompany_Id(Long companyId);
 }

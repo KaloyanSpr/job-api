@@ -1,7 +1,7 @@
 package example.job_api.enums;
 
 public enum Role {
-    ADMIN,
+        ADMIN,
     RECRUITER,
     JOB_SEEKER
 }

@@ -1,5 +1,6 @@
 package example.job_api.services.user.impl;
 
+import example.job_api.dto.SkillDto;
 import example.job_api.dto.UserDto;
 import example.job_api.entities.Application;
 import example.job_api.entities.Skill;
@@ -11,9 +12,11 @@ import example.job_api.services.skill.SkillService;
 import example.job_api.services.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -21,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final SkillService skillService;
+
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -70,17 +74,24 @@ public class UserServiceImpl implements UserService {
         if (id == null || userDto == null) {
             throw new IllegalArgumentException("User ID and UserDto cannot be null");
         }
-
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + id));
-
-        existingUser.setFirstName(userDto.getFirstName());
-        existingUser.setLastName(userDto.getLastName());
-        existingUser.setEmail(userDto.getEmail());
-        existingUser.setRole(Role.valueOf(userDto.getRole()));
-
-        Set<Skill> skills = skillService.getSkillsByIds(userDto.getSkillIds());
-        existingUser.setSkills(skills);
+        if (userDto.getFirstName() != null) {
+            existingUser.setFirstName(userDto.getFirstName());
+        }
+        if (userDto.getLastName() != null) {
+            existingUser.setLastName(userDto.getLastName());
+        }
+        if (userDto.getEmail() != null) {
+            existingUser.setEmail(userDto.getEmail());
+        }
+        if (userDto.getRole() != null) {
+            existingUser.setRole(Role.valueOf(userDto.getRole()));
+        }
+        if (userDto.getSkillIds() != null && !userDto.getSkillIds().isEmpty()) {
+            Set<Skill> skills = skillService.getSkillsByIds(userDto.getSkillIds());
+            existingUser.setSkills(skills);
+        }
 
         userRepository.save(existingUser);
     }
@@ -95,6 +106,35 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User not found with ID: " + id);
         }
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void addSkillToUser(Long userId, SkillDto skillDto) {
+        if (userId == null || skillDto == null) {
+            throw new IllegalArgumentException("User ID and Skill DTO cannot be null");
+        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found for ID: " + userId));
+        Skill skill = skillService.createOrGetSkill(skillDto);
+        user.getSkills().add(skill);
+        userRepository.save(user);
+    }
+
+@Override
+    public List<UserDto> getUsersBySkill(Long skillId) {
+        List<User> users = userRepository.findUsersBySkillId(skillId);
+        return users.stream()
+                .map(user -> {
+                    UserDto userDto = userMapper.toDto(user);
+                    userDto.setSkillIds(user.getSkills().stream()
+                            .map(Skill::getId)
+                            .collect(Collectors.toSet()));
+                    userDto.setApplicationIds(user.getApplications().stream()
+                            .map(Application::getId)
+                            .collect(Collectors.toSet()));
+                    return userDto;
+                })
+                .collect(Collectors.toList());
     }
 
 }

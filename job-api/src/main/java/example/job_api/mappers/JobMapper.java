@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 @Component
 @AllArgsConstructor
 public class JobMapper {
-    private final CompanyService companyService;
-    private final ApplicationService applicationService;
 
     public JobDto toDto(Job job) {
         if (job == null) {
@@ -43,18 +41,10 @@ public class JobMapper {
         if (jobDto == null) {
             return null;
         }
-
-        Company company = companyService.getCompanyModelById(jobDto.getCompanyId());
-        Set<Application> applications = applicationService.getApplicationsByIds(jobDto.getApplicationIds());
-
         Job job = new Job();
-        job.setId(jobDto.getId());
         job.setTitle(jobDto.getTitle());
         job.setDescription(jobDto.getDescription());
         job.setLocation(jobDto.getLocation());
-        job.setCompany(company);
-        job.setApplications(applications);
-
         return job;
     }
 }

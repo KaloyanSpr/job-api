@@ -71,4 +71,22 @@ public class SkillServiceImpl implements SkillService {
         }
         skillRepository.deleteById(id);
     }
+
+    @Override
+    public Set<Skill> getSkillsForUser(Long userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+        return skillRepository.findSkillsByUserId(userId);
+    }
+
+    @Override
+    public Skill createOrGetSkill(SkillDto skillDto) {
+        return skillRepository.findByName(skillDto.getName())
+                .orElseGet(() -> {
+                    Skill newSkill = new Skill();
+                    newSkill.setName(skillDto.getName());
+                    return skillRepository.save(newSkill);
+                });
+    }
 }

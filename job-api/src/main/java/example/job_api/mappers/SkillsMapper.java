@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Component
 @AllArgsConstructor
 public class SkillsMapper {
-    private final UserService userService;
+
     public  SkillDto toDto(Skill skill) {
         if (skill == null) {
             return null;
@@ -37,11 +37,6 @@ public class SkillsMapper {
             return null;
         }
         Skill skill = new Skill();
-
-        if (skillDto.getUserIds() != null && !skillDto.getUserIds().isEmpty()) {
-            List<User> users = userService.getUsersByIds(new ArrayList<>(skillDto.getUserIds()));
-            skill.setUsers(new HashSet<>(users));
-        }
 
         skill.setId(skillDto.getId());
         skill.setName(skillDto.getName());

@@ -22,6 +22,9 @@ public class Company {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     private String location;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)

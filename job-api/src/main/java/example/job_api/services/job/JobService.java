@@ -16,5 +16,5 @@ public interface JobService {
     Set<JobDto> getAllJobs();
     JobDto updateJob(Long id, JobDto jobDto);
     void deleteJob(Long id);
-
+    List<JobDto> getJobsByCompanyId(Long companyId);
 }
