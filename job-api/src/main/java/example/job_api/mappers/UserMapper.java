@@ -16,8 +16,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Component
 public class UserMapper {
-    private final SkillService skillService;
-    private final ApplicationService applicationService;
 
     public UserDto toDto(User user) {
         if (user == null) {
@@ -49,16 +47,6 @@ public class UserMapper {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setRole(Role.valueOf(userDto.getRole()));
-
-        if (userDto.getSkillIds() != null) {
-            Set<Skill> skills = skillService.getSkillsByIds(userDto.getSkillIds());
-            user.setSkills(skills);
-        }
-
-        if (userDto.getApplicationIds() != null) {
-            Set<Application> applications = applicationService.getApplicationsByIds(userDto.getApplicationIds());
-            user.setApplications(applications);
-        }
 
         return user;
     }

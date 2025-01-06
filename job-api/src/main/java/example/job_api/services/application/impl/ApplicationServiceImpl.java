@@ -2,9 +2,13 @@ package example.job_api.services.application.impl;
 
 import example.job_api.dto.ApplicationDto;
 import example.job_api.entities.Application;
+import example.job_api.entities.Job;
+import example.job_api.entities.User;
 import example.job_api.mappers.ApplicationMapper;
 import example.job_api.repositories.ApplicationRepository;
 import example.job_api.services.application.ApplicationService;
+import example.job_api.services.job.JobService;
+import example.job_api.services.user.UserService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,8 @@ import java.util.Set;
 public class ApplicationServiceImpl implements ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final ApplicationMapper applicationMapper;
+    private final UserService userService;
+    private final JobService jobService;
 
     @Override
     public ApplicationDto getApplicationById(Long id) {
@@ -52,7 +58,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new IllegalArgumentException("User ID cannot be null");
         }
         try {
-            Set<Application> applications = applicationRepository.findByUserId(userId);
+            Set<Application> applications = applicationRepository.findByUser_Id(userId);
             return applications;
         } catch (Exception e) {
             throw new RuntimeException("Failed to fetch applications for user ID: " + userId);
@@ -68,6 +74,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         try {
 
             Application application = applicationMapper.toEntity(applicationDto);
+
+            application.setUser(userService.getUserByModelId(applicationDto.getUserId()));
+            application.setJob(jobService.getJobByModelId(applicationDto.getJobId()));
+
             application = applicationRepository.save(application);
             ApplicationDto savedApplicationDto = applicationMapper.toDto(application);
             return savedApplicationDto;
@@ -119,12 +129,24 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<ApplicationDto> getApplicationsByJobId(Long jobId) {
         // Fetch applications for the job
-        List<Application> applications = applicationRepository.findByJobId(jobId);
+        List<Application> applications = applicationRepository.findByJob_Id(jobId);
 
         // Map applications to DTOs
         return applications.stream()
                 .map(applicationMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public ApplicationDto createApplicationForUser(Long userId, ApplicationDto applicationDto) {
+        User user = userService.getUserByModelId(userId);
+        Job job = jobService.getJobByModelId(applicationDto.getJobId());
+
+        Application application = applicationMapper.toEntity(applicationDto);
+        application.setUser(user);
+        application.setJob(job);
+        Application savedApplication = applicationRepository.save(application);
+        return applicationMapper.toDto(savedApplication);
     }
 
 }

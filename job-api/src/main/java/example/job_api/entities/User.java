@@ -29,9 +29,9 @@ public class User {
     @Column(name = "email_id", nullable = false, unique = true)
     private String email;
 
-    @Enumerated(EnumType.STRING) // Enum will be stored as a String in the database
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role; // Define the field here
+    private Role role;
 
     @ManyToMany
     @JoinTable(
@@ -39,10 +39,10 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
-
     private Set<Skill> skills;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Application> applications;
+
 }
 

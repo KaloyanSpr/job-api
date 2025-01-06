@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
-    Set<Application> findByUserId(Long userId);
-    List<Application> findByJobId(Long jobId);
+    Set<Application> findByUser_Id(Long userId);  // Searching by User ID
+    List<Application> findByJob_Id(Long jobId);
 }

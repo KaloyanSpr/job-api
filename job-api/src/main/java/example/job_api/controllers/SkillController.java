@@ -1,23 +1,23 @@
 package example.job_api.controllers;
 
 import example.job_api.dto.SkillDto;
+import example.job_api.dto.UserDto;
+import example.job_api.entities.User;
 import example.job_api.services.skill.SkillService;
+import example.job_api.services.user.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@AllArgsConstructor
 @RestController
 @RequestMapping("/skills")
 public class SkillController {
     private final SkillService skillService;
-
-    @Autowired
-    public SkillController(SkillService skillService) {
-        this.skillService = skillService;
-    }
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<SkillDto> createSkill(@RequestBody SkillDto skillDTO) {
@@ -43,5 +43,10 @@ public class SkillController {
     public ResponseEntity<Void> deleteSkill(@PathVariable Long id) {
         skillService.deleteSkill(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/{skillId}/users")
+    public ResponseEntity<List<UserDto>> getUsersBySkill(@PathVariable Long skillId) {
+        List<UserDto> users = userService.getUsersBySkill(skillId);
+        return ResponseEntity.ok(users);
     }
 }

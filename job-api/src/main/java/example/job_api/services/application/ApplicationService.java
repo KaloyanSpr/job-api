@@ -14,4 +14,5 @@ public interface ApplicationService {
     ApplicationDto updateApplication(Long id, ApplicationDto applicationDto);
     void deleteApplication(Long id);
     List<ApplicationDto> getApplicationsByJobId(Long jobId);
+    ApplicationDto createApplicationForUser(Long userId, ApplicationDto applicationDto);
 }

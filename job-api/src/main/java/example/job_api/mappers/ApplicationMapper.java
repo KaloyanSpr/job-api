@@ -13,10 +13,8 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class ApplicationMapper {
-    private final ApplicationService applicationService;
-    private final UserService userService;
-    private final JobService jobService;
-    public  ApplicationDto toDto(Application application) {
+
+    public ApplicationDto toDto(Application application) {
         if (application == null) {
             return null;
         }
@@ -34,13 +32,10 @@ public class ApplicationMapper {
         if (applicationDto == null) {
             return null;
         }
-        User user = userService.getUserByModelId(applicationDto.getUserId());
-        Job job = jobService.getJobByModelId(applicationDto.getJobId());
+
         Application application = new Application();
         application.setId(applicationDto.getId());
         application.setStatus(applicationDto.getStatus());
-        application.setUser(user);
-        application.setJob(job);
 
         return application;
     }

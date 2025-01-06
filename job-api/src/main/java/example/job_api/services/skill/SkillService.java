@@ -14,4 +14,6 @@ public interface SkillService {
     List<SkillDto> getAllSkills();
     SkillDto updateSkill(Long id, SkillDto skillDto);
     void deleteSkill(Long id);
+    Set<Skill> getSkillsForUser(Long userId);
+    Skill createOrGetSkill(SkillDto skillDto);
 }

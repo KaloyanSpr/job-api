@@ -1,5 +1,6 @@
 package example.job_api.services.user;
 
+import example.job_api.dto.SkillDto;
 import example.job_api.dto.UserDto;
 import example.job_api.entities.Application;
 import example.job_api.entities.User;
@@ -14,4 +15,6 @@ public interface UserService {
     User getUserByModelId(Long modelId);
     void updateUser(Long id,UserDto userDto);
     void deleteUser(Long id);
+    void addSkillToUser(Long userId, SkillDto skillDto);
+    List<UserDto> getUsersBySkill(Long skillId);
 }
