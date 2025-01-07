@@ -14,7 +14,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -121,20 +123,27 @@ public class UserServiceImpl implements UserService {
     }
 
 @Override
-    public List<UserDto> getUsersBySkill(Long skillId) {
-        List<User> users = userRepository.findUsersBySkillId(skillId);
-        return users.stream()
-                .map(user -> {
-                    UserDto userDto = userMapper.toDto(user);
-                    userDto.setSkillIds(user.getSkills().stream()
-                            .map(Skill::getId)
-                            .collect(Collectors.toSet()));
-                    userDto.setApplicationIds(user.getApplications().stream()
-                            .map(Application::getId)
-                            .collect(Collectors.toSet()));
-                    return userDto;
-                })
-                .collect(Collectors.toList());
-    }
+public List<UserDto> getUsersBySkill(Long skillId) {
+    List<User> users = userRepository.findUsersBySkillId(skillId);
+    return users.stream()
+            .map(user -> {
+                UserDto userDto = userMapper.toDto(user);
+                userDto.setSkillIds(Optional.ofNullable(user.getSkills())
+                        .orElse(Collections.emptySet())
+                        .stream()
+                        .map(Skill::getId)
+                        .collect(Collectors.toSet()));
+
+                userDto.setApplicationIds(Optional.ofNullable(user.getApplications())
+                        .orElse(Collections.emptySet())
+                        .stream()
+                        .map(Application::getId)
+                        .collect(Collectors.toSet()));
+
+                return userDto;
+            })
+            .collect(Collectors.toList());
+}
+
 
 }
