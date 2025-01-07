@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 @AllArgsConstructor
 @Service
 public class ApplicationServiceImpl implements ApplicationService {
@@ -128,13 +130,19 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public List<ApplicationDto> getApplicationsByJobId(Long jobId) {
-        // Fetch applications for the job
         List<Application> applications = applicationRepository.findByJob_Id(jobId);
-
-        // Map applications to DTOs
         return applications.stream()
-                .map(applicationMapper::toDto)
-                .toList();
+                .map(application -> {
+                    ApplicationDto dto = applicationMapper.toDto(application);
+                    if (dto.getJobId() == null && application.getJob() != null) {
+                        dto.setJobId(application.getJob().getId());
+                    }
+                    if (dto.getUserId() == null && application.getUser() != null) {
+                        dto.setUserId(application.getUser().getId());
+                    }
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
